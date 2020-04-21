@@ -25,6 +25,10 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
     return () => props.reset();
   }, []);
 
+  const handleClose = () => {
+    props.history.push('/admin/user-management');
+  };
+
   const saveUser = (event, values) => {
     if (isNew) {
       props.createUser(values);
@@ -32,10 +36,6 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
       props.updateUser(values);
     }
     handleClose();
-  };
-
-  const handleClose = () => {
-    props.history.push('/admin/user-management');
   };
 
   const isInvalid = false;
@@ -156,7 +156,7 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
               </AvGroup>
               <AvGroup check>
                 <Label>
-                  <AvInput type="checkbox" name="activated" value={user.activated} />{' '}
+                  <AvInput type="checkbox" name="activated" value={user.activated} checked={user.activated} disabled={!user.id} />{' '}
                   <Translate contentKey="userManagement.activated">Activated</Translate>
                 </Label>
               </AvGroup>
@@ -164,7 +164,7 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
                 <Label for="langKey">
                   <Translate contentKey="userManagement.langKey">Language Key</Translate>
                 </Label>
-                <AvField type="select" className="form-control" name="langKey" value={user.langKey}>
+                <AvField type="select" className="form-control" name="langKey" value={user.langKey || locales[0]}>
                   {locales.map(locale => (
                     <option value={locale} key={locale}>
                       {languages[locale].name}
@@ -174,7 +174,7 @@ export const UserManagementUpdate = (props: IUserManagementUpdateProps) => {
               </AvGroup>
               <AvGroup>
                 <Label for="authorities">
-                  <Translate contentKey="userManagement.profiles">Language Key</Translate>
+                  <Translate contentKey="userManagement.profiles">Profiles</Translate>
                 </Label>
                 <AvInput type="select" className="form-control" name="authorities" value={user.authorities} multiple>
                   {roles.map(role => (
@@ -217,7 +217,4 @@ const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserManagementUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagementUpdate);

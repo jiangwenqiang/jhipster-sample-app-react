@@ -15,15 +15,10 @@
     "searchEngine": false,
     "enableTranslation": true,
     "applicationType": "monolith",
-    "testFrameworks": [
-      "gatling",
-      "protractor"
-    ],
-    "languages": [
-      "en"
-    ],
+    "testFrameworks": ["gatling", "protractor"],
+    "languages": ["en"],
     "serverPort": 8080,
-    "jhipsterVersion": "6.2.0",
+    "jhipsterVersion": "6.8.0",
     "enableSocialSignIn": false,
     "useSass": true,
     "jhiPrefix": "jhi",
@@ -39,6 +34,8 @@
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "clientTheme": "none",
-    "blueprints": []
+    "blueprints": [],
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1577000884780
   }
 }

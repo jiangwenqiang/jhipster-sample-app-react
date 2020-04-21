@@ -1,6 +1,7 @@
 package io.github.jhipster.sample.repository;
 
 import io.github.jhipster.sample.domain.BankAccount;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,4 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
 
     @Query("select bankAccount from BankAccount bankAccount where bankAccount.user.login = ?#{principal.username}")
     List<BankAccount> findByUserIsCurrentUser();
-
 }

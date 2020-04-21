@@ -5,25 +5,19 @@ import io.github.jhipster.sample.domain.Label;
 import io.github.jhipster.sample.repository.LabelRepository;
 import io.github.jhipster.sample.service.dto.LabelDTO;
 import io.github.jhipster.sample.service.mapper.LabelMapper;
-import io.github.jhipster.sample.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static io.github.jhipster.sample.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,6 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link LabelResource} REST controller.
  */
 @SpringBootTest(classes = JhipsterSampleApplicationReactApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class LabelResourceIT {
 
     private static final String DEFAULT_LABEL = "AAAAAAAAAA";
@@ -45,35 +42,12 @@ public class LabelResourceIT {
     private LabelMapper labelMapper;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restLabelMockMvc;
 
     private Label label;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final LabelResource labelResource = new LabelResource(labelRepository, labelMapper);
-        this.restLabelMockMvc = MockMvcBuilders.standaloneSetup(labelResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -111,7 +85,7 @@ public class LabelResourceIT {
         // Create the Label
         LabelDTO labelDTO = labelMapper.toDto(label);
         restLabelMockMvc.perform(post("/api/labels")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
             .andExpect(status().isCreated());
 
@@ -133,7 +107,7 @@ public class LabelResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLabelMockMvc.perform(post("/api/labels")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
             .andExpect(status().isBadRequest());
 
@@ -154,7 +128,7 @@ public class LabelResourceIT {
         LabelDTO labelDTO = labelMapper.toDto(label);
 
         restLabelMockMvc.perform(post("/api/labels")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
             .andExpect(status().isBadRequest());
 
@@ -171,9 +145,9 @@ public class LabelResourceIT {
         // Get all the labelList
         restLabelMockMvc.perform(get("/api/labels?sort=id,desc"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(label.getId().intValue())))
-            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL.toString())));
+            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)));
     }
     
     @Test
@@ -185,9 +159,9 @@ public class LabelResourceIT {
         // Get the label
         restLabelMockMvc.perform(get("/api/labels/{id}", label.getId()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(label.getId().intValue()))
-            .andExpect(jsonPath("$.label").value(DEFAULT_LABEL.toString()));
+            .andExpect(jsonPath("$.label").value(DEFAULT_LABEL));
     }
 
     @Test
@@ -214,7 +188,7 @@ public class LabelResourceIT {
         LabelDTO labelDTO = labelMapper.toDto(updatedLabel);
 
         restLabelMockMvc.perform(put("/api/labels")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
             .andExpect(status().isOk());
 
@@ -235,7 +209,7 @@ public class LabelResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLabelMockMvc.perform(put("/api/labels")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(labelDTO)))
             .andExpect(status().isBadRequest());
 
@@ -254,49 +228,11 @@ public class LabelResourceIT {
 
         // Delete the label
         restLabelMockMvc.perform(delete("/api/labels/{id}", label.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<Label> labelList = labelRepository.findAll();
         assertThat(labelList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(Label.class);
-        Label label1 = new Label();
-        label1.setId(1L);
-        Label label2 = new Label();
-        label2.setId(label1.getId());
-        assertThat(label1).isEqualTo(label2);
-        label2.setId(2L);
-        assertThat(label1).isNotEqualTo(label2);
-        label1.setId(null);
-        assertThat(label1).isNotEqualTo(label2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(LabelDTO.class);
-        LabelDTO labelDTO1 = new LabelDTO();
-        labelDTO1.setId(1L);
-        LabelDTO labelDTO2 = new LabelDTO();
-        assertThat(labelDTO1).isNotEqualTo(labelDTO2);
-        labelDTO2.setId(labelDTO1.getId());
-        assertThat(labelDTO1).isEqualTo(labelDTO2);
-        labelDTO2.setId(2L);
-        assertThat(labelDTO1).isNotEqualTo(labelDTO2);
-        labelDTO1.setId(null);
-        assertThat(labelDTO1).isNotEqualTo(labelDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(labelMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(labelMapper.fromId(null)).isNull();
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 
-// tslint:disable-next-line:no-unused-variable
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 
 import BankAccount from './bank-account';
@@ -13,9 +13,9 @@ const Routes = ({ match }) => (
   <div>
     <Switch>
       {/* prettier-ignore */}
-      <ErrorBoundaryRoute path={`${match.url}/bank-account`} component={BankAccount} />
-      <ErrorBoundaryRoute path={`${match.url}/label`} component={Label} />
-      <ErrorBoundaryRoute path={`${match.url}/operation`} component={Operation} />
+      <ErrorBoundaryRoute path={`${match.url}bank-account`} component={BankAccount} />
+      <ErrorBoundaryRoute path={`${match.url}label`} component={Label} />
+      <ErrorBoundaryRoute path={`${match.url}operation`} component={Operation} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

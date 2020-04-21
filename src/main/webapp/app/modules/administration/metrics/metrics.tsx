@@ -88,8 +88,8 @@ export const MetricsPage = (props: IMetricsPageProps) => {
       ) : (
         ''
       )}
-      {metrics && metrics.endpointsRequests ? (
-        <EndpointsRequestsMetrics endpointsRequestsMetrics={metrics.endpointsRequests} wholeNumberFormat={APP_WHOLE_NUMBER_FORMAT} />
+      {metrics && metrics.services ? (
+        <EndpointsRequestsMetrics endpointsRequestsMetrics={metrics.services} wholeNumberFormat={APP_WHOLE_NUMBER_FORMAT} />
       ) : (
         ''
       )}
@@ -128,7 +128,4 @@ const mapDispatchToProps = { systemMetrics, systemThreadDump };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MetricsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MetricsPage);

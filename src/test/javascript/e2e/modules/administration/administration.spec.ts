@@ -1,4 +1,3 @@
-/* tslint:disable no-unused-expression */
 import { element, by, browser } from 'protractor';
 
 import NavBarPage from '../../page-objects/navbar-page';
@@ -35,6 +34,7 @@ describe('Administration', () => {
 
   it('should load metrics', async () => {
     await navBarPage.clickOnAdminMenuItem('metrics');
+    await waitUntilDisplayed(element(by.id('metrics-page-heading')));
     expect(await element(by.id('metrics-page-heading')).getText()).to.eq('Application Metrics');
   });
 

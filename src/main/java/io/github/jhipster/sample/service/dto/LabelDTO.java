@@ -1,4 +1,5 @@
 package io.github.jhipster.sample.service.dto;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -7,14 +8,14 @@ import java.util.Objects;
  * A DTO for the {@link io.github.jhipster.sample.domain.Label} entity.
  */
 public class LabelDTO implements Serializable {
-
+    
     private Long id;
 
     @NotNull
     @Size(min = 3)
     private String label;
 
-
+    
     public Long getId() {
         return id;
     }

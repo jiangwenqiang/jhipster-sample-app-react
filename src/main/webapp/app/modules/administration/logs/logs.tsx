@@ -47,7 +47,7 @@ export const LogsPage = (props: ILogsPageProps) => {
       </span>
       <input type="text" value={filter} onChange={changeFilter} className="form-control" disabled={isFetching} />
 
-      <table className="table table-sm table-striped table-bordered">
+      <table className="table table-sm table-striped table-bordered" aria-describedby="logs-page-heading">
         <thead>
           <tr title="click to order">
             <th>
@@ -130,7 +130,4 @@ const mapDispatchToProps = { getLoggers, changeLogLevel };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LogsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LogsPage);

@@ -34,7 +34,7 @@ export const HealthPage = (props: IHealthPageProps) => {
   const renderModal = () => <HealthModal healthObject={healthObject} handleClose={handleClose} showModal={showModal} />;
 
   const { health, isFetching } = props;
-  const data = (health || {}).details || {};
+  const data = (health || {}).components || {};
 
   return (
     <div>
@@ -50,7 +50,7 @@ export const HealthPage = (props: IHealthPageProps) => {
       </p>
       <Row>
         <Col md="12">
-          <Table bordered>
+          <Table bordered aria-describedby="health-page-heading">
             <thead>
               <tr>
                 <th>Service Name</th>
@@ -95,7 +95,4 @@ const mapDispatchToProps = { systemHealth };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HealthPage);
+export default connect(mapStateToProps, mapDispatchToProps)(HealthPage);

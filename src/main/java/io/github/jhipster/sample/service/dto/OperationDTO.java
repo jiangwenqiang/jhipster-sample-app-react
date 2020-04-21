@@ -1,4 +1,5 @@
 package io.github.jhipster.sample.service.dto;
+
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.Objects;
  * A DTO for the {@link io.github.jhipster.sample.domain.Operation} entity.
  */
 public class OperationDTO implements Serializable {
-
+    
     private Long id;
 
     @NotNull
@@ -26,9 +27,8 @@ public class OperationDTO implements Serializable {
     private Long bankAccountId;
 
     private String bankAccountName;
-
     private Set<LabelDTO> labels = new HashSet<>();
-
+    
     public Long getId() {
         return id;
     }
@@ -113,8 +113,9 @@ public class OperationDTO implements Serializable {
             ", date='" + getDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", amount=" + getAmount() +
-            ", bankAccount=" + getBankAccountId() +
-            ", bankAccount='" + getBankAccountName() + "'" +
+            ", bankAccountId=" + getBankAccountId() +
+            ", bankAccountName='" + getBankAccountName() + "'" +
+            ", labels='" + getLabels() + "'" +
             "}";
     }
 }

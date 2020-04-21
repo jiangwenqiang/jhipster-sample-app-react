@@ -1,6 +1,7 @@
 package io.github.jhipster.sample.repository;
 
 import io.github.jhipster.sample.domain.Operation;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -25,5 +26,4 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     @Query("select operation from Operation operation left join fetch operation.labels where operation.id =:id")
     Optional<Operation> findOneWithEagerRelationships(@Param("id") Long id);
-
 }
